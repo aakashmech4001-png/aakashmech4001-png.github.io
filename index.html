@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Little Puzzle 💖</title>
+
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h2 {
+    color: #fff;
+  }
+
+  #puzzle {
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .tile {
+    background-image: url("photo.jpeg"); /* 👈 your image */
+    background-size: 300px 300px;
+    cursor: pointer;
+  }
+
+  .empty {
+    background: none;
+    cursor: default;
+  }
+
+  #question, #yesScreen {
+    display: none;
+    margin-top: 30px;
+  }
+
+  button {
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+  }
+
+  .yes {
+    background: #ff4d6d;
+    color: white;
+  }
+
+  .no {
+    background: #fff;
+    color: #ff4d6d;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>Solve the puzzle 🧩</h2>
+
+<div id="puzzle"></div>
+
+<div id="question">
+  <h2>Would you be my Valentine? 💘</h2>
+  <button class="yes" onclick="yesClicked()">Yes 💖</button>
+  <button class="no" onclick="noClicked()">No 🙈</button>
+</div>
+
+<div id="yesScreen">
+  <h2>Yayyy!!! 🥹💞</h2>
+  <p>You just made my heart do backflips 💕</p>
+  <p>🌹 Happy Valentine’s Day 🌹</p>
+</div>
+
+<script>
+  const puzzle = document.getElementById("puzzle");
+  const question = document.getElementById("question");
+  const yesScreen = document.getElementById("yesScreen");
+
+  let tiles = [...Array(9).keys()];
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function render() {
+    puzzle.innerHTML = "";
+    tiles.forEach((num, i) => {
+      const div = document.createElement("div");
+      div.className = "tile";
+      if (num === 8) {
+        div.classList.add("empty");
+      } else {
+        const x = (num % 3) * -100;
+        const y = Math.floor(num / 3) * -100;
+        div.style.backgroundPosition = `${x}px ${y}px`;
+      }
+      div.onclick = () => move(i);
+      puzzle.appendChild(div);
+    });
+
+    if (isSolved()) {
+      question.style.display = "block";
+    }
+  }
+
+  function move(index) {
+    const empty = tiles.indexOf(8);
+    const validMoves = [empty - 1, empty + 1, empty - 3, empty + 3];
+    if (validMoves.includes(index)) {
+      [tiles[empty], tiles[index]] = [tiles[index], tiles[empty]];
+      render();
+    }
+  }
+
+  function isSolved() {
+    return tiles.every((v, i) => v === i);
+  }
+
+  function noClicked() {
+    alert("Try again 😌");
+    location.reload();
+  }
+
+  function yesClicked() {
+    question.style.display = "none";
+    puzzle.style.display = "none";
+    yesScreen.style.display = "block";
+  }
+
+  shuffle(tiles);
+  render();
+</script>
+
+</body>
+</html>
