@@ -28,7 +28,7 @@
   }
 
   .tile {
-    background-image: url("photo.jpeg"); /* 👈 your image */
+    background-image: url("photo.jpeg");
     background-size: 300px 300px;
     cursor: pointer;
   }
@@ -61,6 +61,12 @@
     background: #fff;
     color: #ff4d6d;
   }
+
+  #noMessage {
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+  }
 </style>
 </head>
 
@@ -74,6 +80,7 @@
   <h2>Would you be my Valentine? 💘</h2>
   <button class="yes" onclick="yesClicked()">Yes 💖</button>
   <button class="no" onclick="noClicked()">No 🙈</button>
+  <p id="noMessage"></p>
 </div>
 
 <div id="yesScreen">
@@ -86,6 +93,7 @@
   const puzzle = document.getElementById("puzzle");
   const question = document.getElementById("question");
   const yesScreen = document.getElementById("yesScreen");
+  const noMessage = document.getElementById("noMessage");
 
   let tiles = [...Array(9).keys()];
 
@@ -131,8 +139,7 @@
   }
 
   function noClicked() {
-    alert("Try again 😌");
-    location.reload();
+    noMessage.innerText = "No? Hmm… try again 😌💫";
   }
 
   function yesClicked() {
